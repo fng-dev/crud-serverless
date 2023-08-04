@@ -1,0 +1,34 @@
+readUser:
+    handler: src/controllers/userController.read
+    events:
+      - httpApi:
+          path: /user
+          method: GET
+          authorizer: CopecOauth2Authorizer
+listUsers:
+  handler: src/controllers/userController.list
+  events:
+    - httpApi:
+        path: /users
+        method: GET
+        authorizer: CopecOauth2Authorizer
+createUsers:
+  handler: src/controllers/userController.create
+  events:
+    - httpApi:
+        path: /user
+        method: POST
+
+updateUsers:
+  handler: src/controllers/userController.update
+  events:
+    - httpApi:
+        path: /user/{id}
+        method: PUT
+
+signInUser:
+  handler: src/controllers/userController.signin
+  events:
+    - httpApi:
+        path: /user/signin
+        method: POST

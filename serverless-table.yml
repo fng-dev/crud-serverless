@@ -1,0 +1,27 @@
+Resources:
+  GuxMainTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: GuxMainTable
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GS1PK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+      - IndexName: Model
+        KeySchema:
+          - AttributeName: GS1PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST

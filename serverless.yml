@@ -1,0 +1,65 @@
+service: aws-gux-crud
+frameworkVersion: '3'
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    
+provider:
+  name: aws
+  runtime: python3.10
+  region: sa-east-1
+  stage: dev
+  memorySize: 128
+  timeout: 30
+  environment:
+    TABLE_NAME:
+      Ref: GuxMainTable
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:DeleteItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:GetItem
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:BatchWriteItem
+      - dynamodb:ListStreams
+      - dynamodb:GetRecords
+      - dynamodb:GetShardIterator
+      - dynamodb:DescribeStream
+    Resource:
+      - !GetAtt GuxMainTable.Arn
+      - !Sub '${GuxMainTable.Arn}/index/*'
+      - !Sub '${GuxMainTable.Arn}/stream/*'
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://*
+        - http://*
+      allowedHeaders:
+        - '*'
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+    authorizers:
+      CopecOauth2Authorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: https://copec-sa.fusionauth.io
+        audience:
+          - 57358958-881b-4b05-a021-d1ae709b4da6
+          - 8ae79912-a853-499b-b9d8-fba3610295ce
+
+resources:
+  ${file(./serverless-table.yml)}
+
+functions:
+  - ${file(./serverless-users-endpoint.yml)}
+
+plugins:
+  - serverless-python-requirements

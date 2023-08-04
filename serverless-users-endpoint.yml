@@ -4,14 +4,13 @@ readUser:
       - httpApi:
           path: /user
           method: GET
-          authorizer: CopecOauth2Authorizer
+          
 listUsers:
   handler: src/controllers/userController.list
   events:
     - httpApi:
         path: /users
         method: GET
-        authorizer: CopecOauth2Authorizer
 createUsers:
   handler: src/controllers/userController.create
   events:

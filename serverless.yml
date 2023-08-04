@@ -46,14 +46,7 @@ provider:
         - PUT
         - DELETE
         - OPTIONS
-    authorizers:
-      CopecOauth2Authorizer:
-        type: jwt
-        identitySource: $request.header.Authorization
-        issuerUrl: https://copec-sa.fusionauth.io
-        audience:
-          - 57358958-881b-4b05-a021-d1ae709b4da6
-          - 8ae79912-a853-499b-b9d8-fba3610295ce
+    
 
 resources:
   ${file(./serverless-table.yml)}
